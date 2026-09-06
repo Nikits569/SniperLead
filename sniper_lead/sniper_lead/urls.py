@@ -26,6 +26,7 @@ def custom_set_language(request):
 urlpatterns = [
     path("", RedirectView.as_view(url="/sk/", permanent=False)),
     path("i18n/setlang/", custom_set_language, name="set_language"),
+    path("", include("payment.urls")),
 ]
 
 urlpatterns += i18n_patterns(
@@ -33,8 +34,7 @@ urlpatterns += i18n_patterns(
     path("", include("landing.urls")),
     path("", include("account.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
-    path("", include("landing.urls")),
-    path("", include("account.urls")),
+
 )
 
 if settings.DEBUG:

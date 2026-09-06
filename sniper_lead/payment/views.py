@@ -18,18 +18,20 @@ class CreateCheckoutSessionView(View):
         try:
             price_id = 'price_1UCDEH4GOC7xoKdSCWnxT3MC'
 
-            checkout_session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
-                line_items=[{
-                    'price': price_id,
-                    'quantity': 1,
-                }],
-                mode='subscription',
-                success_url=settings.DOMAIN_URL + '/dashboard/?success=true&session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=settings.DOMAIN_URL + '/pricing/?canceled=true',
-                client_reference_id=str(request.user.id)
+            session_params = {
+                'payment_method_types': ['card'],
+                'line_items': [{'price': price_id, 'quantity': 1}],
+                'mode': 'subscription',
+                'success_url': settings.DOMAIN_URL + '/dashboard/?success=true&session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url': settings.DOMAIN_URL + '/pricing/?canceled=true',
+                'client_reference_id': str(request.user.id),
+            }
 
-            )
+            # Триал даём только если юзер им ещё не пользовался
+            if not request.user.has_used_trial:
+                session_params['subscription_data'] = {'trial_period_days': 3}
+
+            checkout_session = stripe.checkout.Session.create(**session_params)
             return JsonResponse({'checkout_url': checkout_session.url})
 
         except stripe.StripeError as e:
@@ -63,6 +65,8 @@ def stripe_webhook(request):
             sub.stripe_subscription_id = stripe_subscription_id
             sub.is_active = True  # Даем доступ к SniperLead!
             sub.save()
+            user.has_used_trial = True  # ← новые строки
+            user.save()
         except Profile.DoesNotExist:
             pass
 
