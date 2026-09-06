@@ -1,3 +1,6 @@
+
+from django.utils import timezone
+from datetime import date, timedelta, datetime
 import stripe
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -68,8 +71,19 @@ def stripe_webhook(request):
             sub.is_active = True
             sub.save()
             user.has_used_trial = True
-            user.plan = 'trial/pro'
+
+            if created or not user.has_used_trial:
+                # первый раз — это был триал
+                user.plan = 'trial/pro'
+                user.end_at = timezone.now() + timedelta(days=3)
+            else:
+                # уже платящий юзер — сразу полный месяц
+                user.plan = 'pro'
+                user.end_at = timezone.now() + timedelta(days=30)
+
+            user.start_at = timezone.now()
             user.save()
+
             print('DEBUG: успешно обновили юзера', user.email)  # ← и эту
         except Profile.DoesNotExist:
             print('DEBUG: юзер с id', user_id, 'НЕ НАЙДЕН в базе')  # ← и эту
