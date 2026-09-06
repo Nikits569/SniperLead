@@ -1,0 +1,31 @@
+/* Смещаем ровно на один блок из трех (-33.333%) */
+@keyframes smoothTicker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: smoothTicker 45s linear infinite;
+}
+
+.ticker-wrapper:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+/* Растягиваем маску затухания на всю ширину экрана, чтобы карточки не резались */
+.ticker-fade-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.logo {
+    width: 45px;
+}

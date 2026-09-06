@@ -1,0 +1,438 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "SniperLead — Získavajte zákazky zo sociálnych sietí skôr ako konkurencia" %}</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Кастомные стили -->
+  <link rel="stylesheet" href="{% static 'landing/css/landing.css' %}">
+
+<!-- 1. Сначала твоя логика загружается синхронно (без defer) -->
+  <script>
+    // Передаем переведенные категории прямо из шаблона Django
+    window.LANDING_CATS = [
+      { g: 'realty', i: '🏠', t: '{% trans "Prenájom a predaj bytov" %}' },
+      { g: 'realty', i: '🛏️', t: '{% trans "Spolubývanie a izby" %}' },
+      { g: 'legal', i: '📑', t: '{% trans "Prechodný pobyt & VNJ" %}' },
+      { g: 'legal', i: '📊', t: '{% trans "Účtovníctvo & s.r.o." %}' },
+      { g: 'legal', i: '🌐', t: '{% trans "Úradné preklady" %}' },
+      { g: 'legal', i: '⚖️', t: '{% trans "Právnici a advokáti" %}' },
+      { g: 'build', i: '🔨', t: '{% trans "Stavba, obklady & majstri" %}' },
+      { g: 'build', i: '🧹', t: '{% trans "Hodinový manžel" %}' },
+      { g: 'auto', i: '🚗', t: '{% trans "Autoservis & detailing" %}' },
+      { g: 'auto', i: '📦', t: '{% trans "Sťahovanie a preprava" %}' },
+      { g: 'services', i: '🩺', t: '{% trans "Lekári a prehliadky" %}' },
+      { g: 'services', i: '👶', t: '{% trans "Opatrovateľky detí" %}' }
+    ];
+  </script>
+
+  <script src="{% static 'landing/js/landing.js' %}"></script>
+
+  <!-- 2. Только потом грузится само ядро Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Navbar -->
+  <header class="border-b border-slate-200/80 sticky top-0 bg-white/90 backdrop-blur-lg z-50 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 cursor-pointer">
+        <div><img src="{% static 'landing/images/logo.png' %}" class="logo"></div>
+        <span class="font-extrabold text-xl tracking-tight text-slate-900">{% trans "SniperLead" %}</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Language Switcher -->
+        <div class="hidden sm:flex bg-slate-100 p-1 rounded-md border border-slate-200/60 text-xs font-semibold">
+          <a href="/sk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'sk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">SK</a>
+          <a href="/uk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'uk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">UK</a>
+          <a href="/en{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'en' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">EN</a>
+        </div>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition">{% trans "Môj profil" %}</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="text-sm font-semibold text-slate-600 hover:text-slate-900 transition">{% trans "Prihlásenie" %}</a>
+        {% endif %}
+        <a href="#pricing" class="hidden md:inline-flex text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-sm hover:shadow-md transition">{% trans "Vyskúšať zadarmo" %}</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Экран 1: Clean SaaS Hero -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+
+      <!-- Левая колонка (Контент) -->
+      <div class="lg:col-span-7 text-left">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-semibold mb-6 shadow-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="radar-pulse absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span>🚀 {% trans "AI-radar aktívny v celom Slovensko" %}</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15] mb-6">
+          <span>{% trans "Získavajte zákazky zo sociálnych sietí" %}</span><br>
+          <span class="text-indigo-600">{% trans "skôr ako konkurencia" %}</span>
+        </h1>
+
+        <p class="text-slate-500 text-base sm:text-lg mb-8 leading-relaxed max-w-xl">
+          {% trans "Náš systém nepretržite skenuje Facebook skupiny a Telegram kanály, vyhodnocuje dopyty pomocou AI a posiela vám priame kontakty do 3 sekúnd." %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-6">
+          <a href="/login" class="px-7 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/30 transition text-center">{% trans "Vyskúšať zadarmo" %}</a>
+          <a href="#pipeline" class="px-5 py-3.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold text-sm rounded-xl transition text-center">{% trans "Ako to funguje" %}</a>
+        </div>
+
+        <div class="flex items-center gap-5 text-[11px] font-medium text-slate-400">
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> {% trans "Bez platobnej karty" %}</span>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> {% trans "Okamžitá aktivácia" %}</span>
+        </div>
+      </div>
+
+      <!-- Правая колонка (Терминал) -->
+      <div class="lg:col-span-5 relative" x-data="heroTerminal()">
+        <div class="absolute -top-10 -right-10 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl -z-10"></div>
+        <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl -z-10"></div>
+
+        <div class="bg-white border border-slate-200/80 rounded-2xl shadow-2xl shadow-slate-200/50 overflow-hidden">
+
+          <!-- UI Header -->
+          <div class="bg-slate-50/50 border-b border-slate-100 px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <span class="text-[10px] font-bold text-slate-400 ml-2 uppercase tracking-wider">{% trans "Live Monitoring" %}</span>
+            </div>
+            <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex items-center gap-1.5">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ONLINE
+            </span>
+          </div>
+
+          <!-- UI Tabs -->
+          <div class="p-3 bg-white border-b border-slate-50 flex gap-2 overflow-x-auto no-scrollbar">
+            <button @click="switchTab('rent')" :class="activeTab === 'rent' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "🏠 Reality" %}</button>
+            <button @click="switchTab('vnz')" :class="activeTab === 'vnz' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "⚖️ Právo" %}</button>
+            <button @click="switchTab('build')" :class="activeTab === 'build' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "🔨 Stavba" %}</button>
+            <button @click="switchTab('auto')" :class="activeTab === 'auto' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "🚗 Auto" %}</button>
+          </div>
+
+          <div class="p-5 space-y-4">
+            <!-- Сырой пост -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-left relative transition-opacity duration-200" :class="isAnimating ? 'opacity-0' : 'opacity-100'">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold text-slate-500" x-text="leads[activeTab].source"></span>
+                <span class="text-[10px] text-slate-400" x-text="leads[activeTab].time"></span>
+              </div>
+              <h4 class="text-sm font-bold text-slate-900 mb-1" x-text="leads[activeTab].title"></h4>
+              <p class="text-[11px] text-slate-500 leading-relaxed italic" x-text="leads[activeTab].text"></p>
+            </div>
+
+            <!-- Всплывающий Telegram Push -->
+            <div class="p-4 rounded-xl bg-slate-900 text-white shadow-xl shadow-slate-900/10 border border-slate-800 text-left transition-opacity duration-200" :class="isAnimating ? 'opacity-0' : 'opacity-100'">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-[#2AABEE] text-white font-black text-[9px] flex items-center justify-center">TG</div>
+                  <span class="text-xs font-bold text-slate-200">{% trans "SniperLead Alert" %}</span>
+                  <span class="text-[9px] bg-rose-500/20 text-rose-300 font-bold px-2 py-0.5 rounded-full border border-rose-500/30" x-text="'Score ' + leads[activeTab].score"></span>
+                </div>
+                <span class="text-[10px] font-mono text-emerald-400 font-bold">⚡ 2.8 sek.</span>
+              </div>
+
+              <div class="flex items-center justify-between mb-4 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                <div>
+                  <span class="text-[9px] text-slate-400 uppercase tracking-wider block mb-0.5">{% trans "Odhadovaný zisk" %}</span>
+                  <span class="text-lg font-black text-emerald-400" x-text="leads[activeTab].profit"></span>
+                </div>
+                <span class="text-[10px] text-slate-300 text-right" x-text="leads[activeTab].profitSub"></span>
+              </div>
+
+              <a href="/login" class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-[11px] rounded-lg text-center block transition" x-text="leads[activeTab].btn"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Бесконечный конвейер (Seamless Marquee) -->
+  <section class="w-full py-6 bg-white border-y border-slate-100 ticker-wrapper overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-3 flex items-center justify-between text-[11px] font-bold text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="uppercase tracking-wider">{% trans "Live stream zachytených dopytov z FB a TG" %}</span>
+      </div>
+    </div>
+
+    <div class="w-full relative ticker-fade-container overflow-hidden py-2">
+      <div class="ticker-track flex gap-4">
+        <!-- НАБОР 1 -->
+        <div class="flex gap-4 shrink-0">
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+        </div>
+
+        <!-- НАБОР 2 -->
+        <div class="flex gap-4 shrink-0">
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Экран 2: Компактный хаб категорий -->
+  <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20" x-data="categoriesHub()">
+    <div class="text-center max-w-xl mx-auto mb-10">
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Sledované kategórie dopytov" %}</h2>
+      <p class="text-slate-500 text-sm">{% trans "Vyberte si oblasť, v ktorej hľadáte klientov." %}</p>
+    </div>
+
+    <!-- Табы фильтрации -->
+    <div class="flex items-center justify-center gap-2 overflow-x-auto pb-4 no-scrollbar mb-6">
+      <button @click="selected = 'all'" :class="selected === 'all' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "Všetky (12)" %}</button>
+      <button @click="selected = 'realty'" :class="selected === 'realty' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🏠 Reality" %}</button>
+      <button @click="selected = 'legal'" :class="selected === 'legal' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "⚖️ Právo & Dane" %}</button>
+      <button @click="selected = 'build'" :class="selected === 'build' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🔨 Stavba" %}</button>
+      <button @click="selected = 'auto'" :class="selected === 'auto' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🚗 Auto" %}</button>
+    </div>
+
+    <!-- Сетка категорий -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <template x-for="c in filteredCats" :key="c.t">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3 hover:border-indigo-400 transition">
+          <span class="text-xl" x-text="c.i"></span>
+          <span class="text-xs font-bold text-slate-800" x-text="c.t"></span>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- Экран 3: Pipeline -->
+  <section id="pipeline" class="bg-white border-y border-slate-200 py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-xl mx-auto mb-14">
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Ako to funguje v praxi" %}</h2>
+        <p class="text-slate-500 text-sm">{% trans "Zjednodušili sme proces hľadania zákazníkov na minimum." %}</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 font-black text-lg flex items-center justify-center mx-auto mb-4">1</div>
+          <h3 class="text-sm font-bold text-slate-900 mb-2">{% trans "Zákazník napíše príspevok" %}</h3>
+          <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">{% trans "Do verejnej skupiny na FB alebo v Telegrame pribudne dopyt po službe." %}</p>
+        </div>
+        <div class="text-center relative">
+          <div class="hidden md:block absolute top-6 -left-10 w-20 h-px bg-slate-200"></div>
+          <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 font-black text-lg flex items-center justify-center mx-auto mb-4">2</div>
+          <h3 class="text-sm font-bold text-slate-900 mb-2">{% trans "Umelá inteligencia ho overí" %}</h3>
+          <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">{% trans "AI okamžite prečíta text, vyhodnotí rozpočet a odstráni bežný spam." %}</p>
+        </div>
+        <div class="text-center relative">
+          <div class="hidden md:block absolute top-6 -left-10 w-20 h-px bg-slate-200"></div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 font-black text-lg flex items-center justify-center mx-auto mb-4">3</div>
+          <h3 class="text-sm font-bold text-slate-900 mb-2">{% trans "Získate priamy kontakt" %}</h3>
+          <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">{% trans "Do 3 sekúnd vám pípne notifikácia v mobile. Voláte ako prvý." %}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Экран 4: Калькулятор ROI -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20" x-data="roiCalculator()">
+    <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm">
+      <div class="text-center max-w-lg mx-auto mb-10">
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Kalkulačka návratnosti investície" %}</h2>
+        <p class="text-slate-500 text-sm">{% trans "Zadajte vašu maržu a zistite zisk." %}</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        <button @click="margin = 50" :class="margin == 50 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-xs font-bold transition">50 €</button>
+        <button @click="margin = 150" :class="margin == 150 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-xs font-bold transition">150 €</button>
+        <button @click="margin = 400" :class="margin == 400 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-xs font-bold transition">400 €</button>
+        <button @click="margin = 850" :class="margin == 850 ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'" class="px-4 py-2 rounded-lg text-xs font-bold transition">850 €</button>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-8">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <label class="text-sm font-bold text-slate-800">{% trans "Váš zisk z 1 zákazky:" %}</label>
+              <div class="font-black text-indigo-600 text-xl" x-text="margin + ' €'"></div>
+            </div>
+            <input type="range" min="30" max="2000" step="10" x-model.number="margin" class="w-full accent-indigo-600">
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <label class="text-sm font-bold text-slate-800">{% trans "Počet zákaziek mesačne:" %}</label>
+              <div class="font-black text-slate-900 text-lg" x-text="leads"></div>
+            </div>
+            <input type="range" min="1" max="15" step="1" x-model.number="leads" class="w-full accent-slate-800">
+          </div>
+        </div>
+
+        <div class="p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-center">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{% trans "Váš čistý zisk za mesiac:" %}</span>
+          <div class="text-4xl font-black text-emerald-500 mb-2" x-text="'+ ' + profit + ' €'"></div>
+          <span class="text-xs text-slate-500 mb-6">{% trans "Po odpočítaní ceny balíka Pro (49€)." %}</span>
+          <p class="text-xs text-slate-700 p-3 bg-white rounded-lg border border-slate-200">
+            {% trans "Pri zisku" %} <b x-text="margin + '€'"></b> {% trans "vám stačí uzavrieť" %} <b class="text-indigo-600">{% trans "len 1 zákazku" %}</b>, {% trans "aby ste zaplatili systém." %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Экран 5: Тарифы -->
+  <section id="pricing" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-slate-200">
+    <div class="text-center max-w-xl mx-auto mb-14">
+      <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Flexibilné cenové plány pre váš rast" %}</h2>
+      <p class="text-slate-500 text-sm">{% trans "3 dni zadarmo na skúšku. Zrušenie kedykoľvek." %}</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Starter -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-7 flex flex-col hover:shadow-md transition">
+        <h3 class="text-sm font-bold text-slate-900 mb-1">Starter</h3>
+        <p class="text-xs text-slate-500 mb-6">{% trans "Pre začiatočníkov." %}</p>
+        <div class="text-3xl font-black text-slate-900 mb-6">19€ <span class="text-xs font-medium text-slate-400">/ mes.</span></div>
+        <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "1 kategória" %}</li>
+          <li class="flex items-center gap-2 bg-slate-50 py-1 px-2 rounded -ml-2 text-slate-500"><span>⏳</span> {% trans "Oneskorenie 15 minút" %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Telegram bot" %}</li>
+        </ul>
+        <a href="/login" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">{% trans "Vybrať Starter" %}</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="bg-white border-2 border-indigo-600 rounded-2xl p-7 flex flex-col relative shadow-lg">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-[10px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider">{% trans "Odporúčané" %}</div>
+        <h3 class="text-sm font-bold text-slate-900 mb-1">Pro</h3>
+        <p class="text-xs text-slate-500 mb-6">{% trans "Pre profesionálov." %}</p>
+
+        <!-- Цена -->
+        <div class="text-3xl font-black text-slate-900 mb-6">
+          49€ <span class="text-xs font-medium text-slate-400">/ mes.</span>
+        </div>
+
+        <ul class="space-y-3 text-xs text-slate-700 mb-8 flex-1">
+          <li class="flex items-center gap-2 bg-emerald-50 text-emerald-700 font-semibold py-1 px-2 rounded -ml-2"><span>⚡</span> {% trans "Okamžité alerty (3s)" %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Až 3 kategórie" %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Filter kvality (Score)" %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Telegram" %}</li>
+        </ul>
+
+        <!-- Рабочая кнопка оплаты с уникальным ID -->
+        <button id="pro-checkout-button" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-sm">
+          {% trans "Vyskúšať zadarmo" %}
+        </button>
+      </div>
+
+      <!-- Business -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-7 flex flex-col hover:shadow-md transition">
+        <h3 class="text-sm font-bold text-slate-900 mb-1">Business</h3>
+        <p class="text-xs text-slate-500 mb-6">{% trans "Pre firmy a agentúry." %}</p>
+        <div class="text-3xl font-black text-slate-900 mb-6">99€ <span class="text-xs font-medium text-slate-400">/ mes.</span></div>
+        <ul class="space-y-3 text-xs text-slate-600 mb-8 flex-1">
+          <li class="flex items-center gap-2 font-semibold text-emerald-600"><span>⚡</span> {% trans "Okamžité alerty" %}</li>
+          <li class="flex items-center gap-2 font-bold text-indigo-600"><span>✓</span> {% trans "Všetky kategórie (Bez limitu)" %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Faktúra pre s.r.o." %}</li>
+          <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "TG, WA + Email prístup" %}</li>
+        </ul>
+        <a href="/login" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">{% trans "Aktivovať Business" %}</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-white border-t border-slate-200 py-8 text-center text-[11px] font-medium text-slate-400">
+    <p>{% trans "© 2026 SniperLead. Vytvorené pre trh v SR." %}</p>
+  </footer>
+
+</body>
+<script>
+    document.getElementById('pro-checkout-button').addEventListener('click', function () {
+        // Отправляем POST-запрос на наш Django-бэкенд
+        fetch('/create-checkout-session/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Передаем CSRF-токен Django для безопасности
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ price_id: 'price_1UCDEH4GOC7xoKdWSCWxT3MC' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.checkout_url) {
+                // Успешно получили ссылку от Stripe — перенаправляем туда юзера
+                window.location.href = data.checkout_url;
+            } else {
+                alert('Ошибка создания сессии: ' + (data.error || 'Неизвестная ошибка'));
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,246 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="sk" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <title>{% trans "Môj profil — SniperLead" %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+</head>
+<body class="h-full antialiased flex flex-col justify-between">
+
+  <!-- Navbar -->
+  <header class="border-b border-slate-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5">
+        <div><img class="w-10 h-10 object-contain" src="/static/landing/images/logo.png"></div>
+        <span class="font-extrabold text-xl tracking-tight text-slate-900">{% trans "SniperLead" %}</span>
+      </a>
+
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex bg-slate-100 p-1 rounded-md border border-slate-200/60 text-xs font-semibold">
+          <a href="/sk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'sk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">SK</a>
+          <a href="/uk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'uk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">UK</a>
+          <a href="/en{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'en' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">EN</a>
+        </div>
+        <span class="text-xs font-semibold text-slate-600">{{ request.user.email }}</span>
+        <form method="POST" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="text-xs font-bold text-rose-600 hover:underline">{% trans "Odhlásiť sa" %}</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-10 w-full space-y-8"
+        x-data="{
+          selectedCategories: {{ request.user.categories|safe }},
+          maxCategories: {{ max_categories|default:3 }},
+          tgLinked: {% if request.user.telegram %}true{% else %}false{% endif %},
+          emailNotification: {% if request.user.email_notification %}true{% else %}false{% endif %},
+
+          toggleCategory(id) {
+            if (this.selectedCategories.includes(id)) {
+              this.selectedCategories = this.selectedCategories.filter(item => item !== id);
+            } else {
+              if (this.selectedCategories.length >= this.maxCategories) {
+                alert('Dosiahli ste limit kategórií pre váš plán (' + this.maxCategories + ').');
+                return;
+              }
+              this.selectedCategories.push(id);
+            }
+          },
+
+          saveChanges() {
+            fetch('/sk/profile/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                categories: this.selectedCategories,
+                email_notification: this.emailNotification
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                alert('Zmeny boli úspešne uložené!');
+                window.location.reload();
+              } else {
+                alert('Chyba: ' + (data.message || 'Nepodarilo sa uložiť'));
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('Chyba pri komunikácii so serverom.');
+            });
+          },
+
+          toggleEmail() {
+            this.emailNotification = !this.emailNotification;
+
+            fetch('/sk/profile/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                categories: this.selectedCategories,
+                email_notification: this.emailNotification
+              })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status !== 'success') {
+                alert('Chyba pri ukladaní');
+                this.emailNotification = !this.emailNotification; // откат при ошибке
+              }
+            });
+          }
+        }">
+
+    <!-- Секция 1: Текущий тариф -->
+    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full {% if request.user.days_remaining == 0 %} bg-rose-50 text-rose-600 border border-rose-200 {% else %} text-indigo-600 bg-indigo-50 {% endif %}">
+            {% if request.user.days_remaining == 0 %} {% trans "Neaktívny plán" %} {% else %} {% trans "Aktívny plán" %} {% endif %}
+          </span>
+          <h2 class="text-xl font-black text-slate-900 mt-2">
+            {% if request.user.plan %} {% trans "Balík" %} {{ request.user.plan|title }} {% else %} {% trans "Žiadne balíky" %} {% endif %}
+          </h2>
+        </div>
+        <a href="/#pricing" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-md transition text-center">
+          {% trans "Zmeniť / Zmeniť plán" %}
+        </a>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-4 pt-6 text-center">
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <span class="text-[10px] text-slate-400 block mb-1">{% trans "Platnosť" %}</span>
+          <span class="text-xs font-black text-slate-800">
+            {% if request.user.days_remaining == 0 %}
+              {% trans "Skončilo" %} {{ request.user.end_at|date:"d.m.Y" }}
+            {% else %}
+              {{ request.user.days_remaining }} {% trans "dní do skončenia" %}
+            {% endif %}
+          </span>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <span class="text-[10px] text-slate-400 block mb-1">{% trans "Vybrané kategórie" %}</span>
+          <span class="text-xs font-black text-slate-800" x-text="selectedCategories.length + ' / ' + maxCategories + ' {% trans "zvolené" %}'"></span>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <span class="text-[10px] text-slate-400 block mb-1">{% trans "Rýchlosť alertov" %}</span>
+          <span class="text-xs font-black text-indigo-600">{% trans "⚡ Do 3 sekúnd" %}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция выбора категорий -->
+    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">{% trans "Sledované kategórie dopytov" %}</h3>
+          <p class="text-xs text-slate-500">{% trans "Kliknutím vyberte kategórie, ktoré chcete monitorovať na FB a v Telegrame." %}</p>
+        </div>
+        <!-- Вызываем правильный метод сохранения saveChanges() -->
+        <button @click="saveChanges()"
+                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition shadow-sm">
+          {% trans "Uložiť zmeny" %}
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
+        {% for key, label in categories_choices %}
+        <div @click="toggleCategory('{{ key }}')"
+             :class="selectedCategories.includes('{{ key }}') ? 'border-indigo-600 bg-indigo-50/40 ring-1 ring-indigo-600' : 'border-slate-200 hover:border-slate-300 bg-white'"
+             class="p-4 rounded-2xl border cursor-pointer transition flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">{{ label }}</h4>
+            </div>
+          </div>
+          <div class="w-5 h-5 rounded-full border flex items-center justify-center transition shrink-0 ml-2"
+               :class="selectedCategories.includes('{{ key }}') ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-slate-300'">
+            <span class="text-[10px]" x-show="selectedCategories.includes('{{ key }}')">✓</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Секция 2: Уведомления и интеграции -->
+    <div class="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+      <h3 class="text-base font-extrabold text-slate-900 mb-1">{% trans "Kanály pre doručovanie leadov" %}</h3>
+      <p class="text-xs text-slate-500 mb-6">{% trans "Nastavte si, kam vám budú chodiť okamžité upozornenia na dopyty." %}</p>
+
+      <div class="space-y-4">
+        <!-- Telegram -->
+        <div class="flex items-center justify-between p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#2AABEE] text-white flex items-center justify-center font-bold text-sm">TG</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">{% trans "Telegram Bot" %}</h4>
+              <p class="text-[11px] text-slate-500" x-text="tgLinked ? '{% trans "Pripojené (@username_bot)" %}' : '{% trans "Nie je pripojené" %}'"></p>
+            </div>
+          </div>
+          <button @click="tgLinked = !tgLinked"
+                  :class="tgLinked ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-emerald-600 text-white'"
+                  class="px-4 py-2 rounded-xl text-xs font-bold border transition"
+                  x-text="tgLinked ? '{% trans "Odpojiť" %}' : '{% trans "Prepojiť Telegram" %}'"></button>
+        </div>
+
+        <!-- Email (Мгновенное сохранение по клику) -->
+        <div class="flex items-center justify-between p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">@</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">{% trans "Emailové upozornenia" %}</h4>
+              <p class="text-[11px] text-slate-500" x-text="emailNotification ? 'Zapnuté' : 'Vypnuté'"></p>
+            </div>
+          </div>
+          <button type="button"
+                  @click="toggleEmail()"
+                  :class="emailNotification ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-emerald-600 text-white'"
+                  class="px-4 py-2 rounded-xl text-xs font-bold border transition"
+                  x-text="emailNotification ? 'Vypnúť' : 'Zapnúť'"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Секция 3: Поддержка -->
+    <dialog class="p-5 border-0 rounded-lg shadow-xl backdrop:bg-black/50" id="help_modal">
+      <h2>Заголовок окна</h2>
+      <p>Текст внутри модального окна.</p>
+      <button id="close-btn">Закрыть</button>
+    </dialog>
+
+    <div class="bg-indigo-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
+      <div>
+        <h3 class="text-base font-extrabold text-white mb-1">{% trans "Potrebujete pomoc alebo nastaviť filter?" %}</h3>
+        <p class="text-xs text-indigo-200">{% trans "Naša technická podpora v SR je k dispozícii denne. Napíšte nám v Telegram." %}</p>
+      </div>
+      <button id="open-btn">
+        {% trans "Napísať na podporu" %}
+      </button>
+      </a>
+    </div>
+
+
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+    <p>{% trans "© 2026 SniperLead. Všetky práva vyhradené." %}</p>
+  </footer>
+
+</body>
+</html>

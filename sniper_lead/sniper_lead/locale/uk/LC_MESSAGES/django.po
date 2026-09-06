@@ -1,0 +1,613 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-03 18:13+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: .\account\admin.py:25
+msgid "Personal info"
+msgstr "Особиста інформація"
+
+#: .\account\admin.py:26
+msgid "Permissions"
+msgstr "Права доступу"
+
+#: .\account\admin.py:29
+msgid "Important dates"
+msgstr "Важливі дати"
+
+#: .\account\forms.py:11 .\account\forms.py:12 .\account\forms.py:33
+msgid "Name"
+msgstr "Ім'я"
+
+#: .\account\forms.py:16 .\account\forms.py:17 .\account\forms.py:61
+msgid "Email"
+msgstr "Email"
+
+#: .\account\forms.py:21 .\account\forms.py:67
+msgid "Пароль"
+msgstr "Пароль"
+
+#: .\account\forms.py:23 .\account\forms.py:69
+msgid "пароль"
+msgstr "пароль"
+
+#: .\account\forms.py:36 .\account\forms.py:63
+msgid "email"
+msgstr "email"
+
+#: .\account\forms.py:39
+msgid "password"
+msgstr "пароль"
+
+#: .\account\forms.py:47
+msgid "користувач із таким email вже існує"
+msgstr "користувач із таким email вже існує"
+
+#: .\account\models.py:12
+msgid "Email is required"
+msgstr "Потрібно вказати email"
+
+#: .\account\models.py:25
+msgid "Superuser must have is_staff=True."
+msgstr "Суперкористувач повинен мати is_staff=True."
+
+#: .\account\models.py:27
+msgid "Superuser must have is_superuser=True."
+msgstr "Суперкористувач повинен мати is_superuser=True."
+
+#: .\account\models.py:37
+msgid "Email address"
+msgstr "Адреса електронної пошти"
+
+#: .\account\models.py:44
+msgid "Email verification token"
+msgstr "Токен підтвердження email"
+
+#: .\account\models.py:48
+msgid "Created at"
+msgstr "Створено"
+
+#: .\account\models.py:66
+msgid "Account"
+msgstr "Обліковий запис"
+
+#: .\account\models.py:67
+msgid "Accounts"
+msgstr "Облікові записи"
+
+#: .\account\templates\account\login.html:9
+msgid "Prihlásenie — SniperLead"
+msgstr "Вхід — SniperLead"
+
+#: .\account\templates\account\login.html:21
+#: .\account\templates\account\profile.html:24
+#: .\account\templates\account\signup.html:21
+#: .\landing\templates\landing\landing.html:36
+msgid "SniperLead"
+msgstr "SniperLead"
+
+#: .\account\templates\account\login.html:23
+msgid "Vitajte späť"
+msgstr "З поверненням"
+
+#: .\account\templates\account\login.html:24
+msgid "Prihláste sa do svojho radarového systému"
+msgstr "Увійдіть до своєї радарної системи"
+
+#: .\account\templates\account\login.html:33
+#: .\account\templates\account\signup.html:39
+msgid "Emailová adresa"
+msgstr "Адреса електронної пошти"
+
+#: .\account\templates\account\login.html:40
+#: .\account\templates\account\signup.html:45
+msgid "Heslo"
+msgstr "Пароль"
+
+#: .\account\templates\account\login.html:41
+msgid "Zabudli ste heslo?"
+msgstr "Забули пароль?"
+
+#: .\account\templates\account\login.html:48
+msgid "Prihlásiť sa"
+msgstr "Увійти"
+
+#: .\account\templates\account\login.html:55
+msgid "Ešte nemáte účet?"
+msgstr "Ще не маєте облікового запису?"
+
+#: .\account\templates\account\login.html:55
+msgid "Vyskúšajte 3 dni zadarmo"
+msgstr "Спробуйте 3 дні безкоштовно"
+
+#: .\account\templates\account\profile.html:9
+msgid "Môj profil — SniperLead"
+msgstr "Мій профіль — SniperLead"
+
+#: .\account\templates\account\profile.html:35
+msgid "Odhlásiť sa"
+msgstr "Вийти"
+
+#: .\account\templates\account\profile.html:48
+msgid "Aktívny plán"
+msgstr "Активний план"
+
+#: .\account\templates\account\profile.html:49
+msgid "Balík Pro (49 € / mes.)"
+msgstr "Пакет Pro (49 € / міс.)"
+
+#: .\account\templates\account\profile.html:50
+msgid "Platnosť predplatného do:"
+msgstr "Підписка дійсна до:"
+
+#: .\account\templates\account\profile.html:53
+msgid "Zmeniť / Zmeniť plán"
+msgstr "Змінити план"
+
+#: .\account\templates\account\profile.html:59
+msgid "Status účtu"
+msgstr "Статус акаунту"
+
+#: .\account\templates\account\profile.html:61
+msgid "Aktívny (Trial/Pro)"
+msgstr "Активний (Тріальний/Pro)"
+
+#: .\account\templates\account\profile.html:65
+msgid "Sledované kategórie"
+msgstr "Відстежувані категорії"
+
+#: .\account\templates\account\profile.html:66
+msgid "3 / 3 kategórie"
+msgstr "3 / 3 категорії"
+
+#: .\account\templates\account\profile.html:69
+msgid "Rýchłość alertov"
+msgstr "Швидкість сповіщень"
+
+#: .\account\templates\account\profile.html:70
+msgid "⚡ Do 3 sekúnd"
+msgstr "⚡ До 3 секунд"
+
+#: .\account\templates\account\profile.html:77
+msgid "Kanály pre doručovanie leadov"
+msgstr "Канали доставки лідів"
+
+#: .\account\templates\account\profile.html:78
+msgid "Nastavte si, kam vám budú chodić okamžité upozornenia na dopyty."
+msgstr "Налаштуйте, куди надсилатимуть миттєві сповіщення про нові запити."
+
+#: .\account\templates\account\profile.html:86
+msgid "Telegram Bot"
+msgstr "Telegram Bot"
+
+#: .\account\templates\account\profile.html:87
+msgid "Pripojené (@username_bot)"
+msgstr "Підключено (@username_bot)"
+
+#: .\account\templates\account\profile.html:87
+msgid "Nie je pripojené"
+msgstr "Не підключено"
+
+#: .\account\templates\account\profile.html:93
+msgid "Odpojiť"
+msgstr "Відключити"
+
+#: .\account\templates\account\profile.html:93
+msgid "Prepojiť Telegram"
+msgstr "Підключити Telegram"
+
+#: .\account\templates\account\profile.html:101
+msgid "WhatsApp Alert"
+msgstr "WhatsApp Сповіщення"
+
+#: .\account\templates\account\profile.html:105
+msgid "Zmeniť číslo"
+msgstr "Змінити номер"
+
+#: .\account\templates\account\profile.html:113
+msgid "Emailové upozornenia"
+msgstr "Email-сповіщення"
+
+#: .\account\templates\account\profile.html:117
+msgid "Zapnuté"
+msgstr "Увімкнено"
+
+#: .\account\templates\account\profile.html:125
+msgid "Potrebujete pomoc alebo nastaviť filter?"
+msgstr "Потрібна допомога чи налаштування фільтра?"
+
+#: .\account\templates\account\profile.html:126
+msgid ""
+"Naša technická podpora v SR je k dispozícii denne. Napшите нам v Telegram."
+msgstr ""
+"Наша техпідтримка доступна щодня. Напишіть нам у Telegram."
+
+#: .\account\templates\account\profile.html:129
+msgid "Napísať na podporu"
+msgstr "Написати в підтримку"
+
+#: .\account\templates\account\profile.html:136
+msgid "© 2026 SniperLead. Všetky práva vyhradené."
+msgstr "© 2026 SniperLead. Всі права захищені."
+
+#: .\account\templates\account\signup.html:9
+msgid "Registrácia — SniperLead"
+msgstr "Реєстрація — SniperLead"
+
+#: .\account\templates\account\signup.html:23
+msgid "Vytvorte si účet"
+msgstr "Створіть акаунт"
+
+#: .\account\templates\account\signup.html:24
+msgid "Získajte 3 dni plného prístupu k radarom zadarmo"
+msgstr "Отримайте 3 дні повного доступу до радарів безкоштовно"
+
+#: .\account\templates\account\signup.html:33
+msgid "Vaše meno / Firma"
+msgstr "Ваше ім'я / Компанія"
+
+#: .\account\templates\account\signup.html:52
+msgid "Spustiť 3-dňový test zadarmo"
+msgstr "Розпочати 3-денний безкоштовний тест"
+
+#: .\account\templates\account\signup.html:60
+msgid "Už máte účet?"
+msgstr "Вже є акаунт?"
+
+#: .\account\templates\account\signup.html:60
+msgid "Prihláste sa"
+msgstr "Увійти"
+
+#: .\landing\templates\landing\landing.html:9
+msgid ""
+"SniperLead — Získavajte zákazky zo sociálnych sietí skôr ako konkurencia"
+msgstr ""
+"SniperLead — Отримуйте замовлення із соціальних мереж швидше за конкурентів"
+
+#: .\landing\templates\landing\landing.html:48
+msgid "Môj profil"
+msgstr "Мій профіль"
+
+#: .\landing\templates\landing\landing.html:50
+msgid "Prihlásenie"
+msgstr "Вхід"
+
+#: .\landing\templates\landing\landing.html:84
+msgid "Bez platobnej karty"
+msgstr "Без платіжної картки"
+
+#: .\landing\templates\landing\landing.html:85
+msgid "Okamžitá aktivácia"
+msgstr "Миттєва активація"
+
+#: .\landing\templates\landing\landing.html:102
+msgid "Live Monitoring"
+msgstr "Живий моніторинг"
+
+#: .\landing\templates\landing\landing.html:111
+#: .\landing\templates\landing\landing.html:264
+msgid "🏠 Reality"
+msgstr "🏠 Нерухомість"
+
+#: .\landing\templates\landing\landing.html:112
+msgid "⚖️ Právo"
+msgstr "⚖️ Право"
+
+#: .\landing\templates\landing\landing.html:113
+#: .\landing\templates\landing\landing.html:266
+msgid "🔨 Stavba"
+msgstr "🔨 Будівництво"
+
+#: .\landing\templates\landing\landing.html:114
+#: .\landing\templates\landing\landing.html:267
+msgid "🚗 Auto"
+msgstr "🚗 Авто"
+
+#: .\landing\templates\landing\landing.html:133
+msgid "SniperLead Alert"
+msgstr "SniperLead Сповіщення"
+
+#: .\landing\templates\landing\landing.html:141
+msgid "Odhadovaný zisk"
+msgstr "Орієнтовний прибуток"
+
+#: .\landing\templates\landing\landing.html:161
+msgid "Live stream zachytených dopytov z FB a TG"
+msgstr "Жива стрічка спійманих запитів із FB та TG"
+
+#: .\landing\templates\landing\landing.html:173
+#: .\landing\templates\landing\landing.html:200
+#: .\landing\templates\landing\landing.html:227
+msgid "🏠 Nájom (FB)"
+msgstr "🏠 Оренда (FB)"
+
+#: .\landing\templates\landing\landing.html:174
+#: .\landing\templates\landing\landing.html:201
+#: .\landing\templates\landing\landing.html:228
+msgid ""
+"«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite "
+"niečo pekné»"
+msgstr ""
+"«Шукаємо 2-кімнатну в Ружинові, бюджет до 850€ з усім, будь ласка, запропонуйте "
+"щось гарне»"
+
+#: .\landing\templates\landing\landing.html:176
+#: .\landing\templates\landing\landing.html:203
+#: .\landing\templates\landing\landing.html:230
+msgid "Bratislava • Pred 1m"
+msgstr "Братислава • 1 хв тому"
+
+#: .\landing\templates\landing\landing.html:181
+#: .\landing\templates\landing\landing.html:208
+#: .\landing\templates\landing\landing.html:235
+msgid "⚖️ VNJ (TG)"
+msgstr "⚖️ Посвідка (TG)"
+
+#: .\landing\templates\landing\landing.html:182
+#: .\landing\templates\landing\landing.html:209
+#: .\landing\templates\landing\landing.html:236
+msgid ""
+"«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»"
+msgstr ""
+"«Терміново потрібен запис до поліції у справах іноземців у БА, тимчасове проживання»"
+
+#: .\landing\templates\landing\landing.html:184
+#: .\landing\templates\landing\landing.html:211
+#: .\landing\templates\landing\landing.html:238
+msgid "Bratislava • Pred 3m"
+msgstr "Братислава • 3 хв тому"
+
+#: .\landing\templates\landing\landing.html:189
+#: .\landing\templates\landing\landing.html:216
+#: .\landing\templates\landing\landing.html:243
+msgid "🔨 Stavba (FB)"
+msgstr "🔨 Будівництво (FB)"
+
+#: .\landing\templates\landing\landing.html:190
+#: .\landing\templates\landing\landing.html:217
+#: .\landing\templates\landing\landing.html:244
+msgid ""
+"«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»"
+msgstr ""
+"«Шукаю вправного плиточника на ванну 7м2 + повний санвузол у новобудові»"
+
+#: .\landing\templates\landing\landing.html:192
+#: .\landing\templates\landing\landing.html:219
+#: .\landing\templates\landing\landing.html:246
+msgid "Trnava • Pred 7m"
+msgstr "Трнава • 7 хв тому"
+
+#: .\landing\templates\landing\landing.html:263
+msgid "Všetky (17)"
+msgstr "Всі (17)"
+
+#: .\landing\templates\landing\landing.html:265
+msgid "⚖️ Právo & Dane"
+msgstr "⚖️ Право та Податки"
+
+#: .\landing\templates\landing\landing.html:285
+msgid "Ako to funguje v praxi"
+msgstr "Як це працює на практиці"
+
+#: .\landing\templates\landing\landing.html:286
+msgid "Zjednodušili sme proces hľadania zákazníkov na minimum."
+msgstr "Ми спростили процес пошуку клієнтів до мінімуму."
+
+#: .\landing\templates\landing\landing.html:292
+msgid "Zákazník napíše príspevok"
+msgstr "Клієнт пише допис"
+
+#: .\landing\templates\landing\landing.html:293
+msgid "Do verejnej skupiny na FB alebo v Telegrame pribudne dopyt po službe."
+msgstr "У публічній групі FB чи Telegram з'являється запит на послугу."
+
+#: .\landing\templates\landing\landing.html:298
+msgid "Umelá inteligencia ho overí"
+msgstr "Штучний інтелект перевіряє його"
+
+#: .\landing\templates\landing\landing.html:299
+msgid "AI okamžite prečíta text, vyhodnotí rozpočet a odstráni bežný spam."
+msgstr "ШІ миттєво читає текст, оцінює бюджет та прибирає звичайний спам."
+
+#: .\landing\templates\landing\landing.html:304
+msgid "Získate priamy kontakt"
+msgstr "Ви отримуєте прямий контакт"
+
+#: .\landing\templates\landing\landing.html:305
+msgid "Do 3 sekúnd vám pípne notifikácia v mobile. Voláte ako prvý."
+msgstr "Протягом 3 секунд вам надходить сповіщення на телефон. Ви телефонуєте першим."
+
+#: .\landing\templates\landing\landing.html:316
+msgid "Zadajte vašu maržu a zistite zisk."
+msgstr "Введіть вашу маржу та дізнайтеся прибуток."
+
+#: .\landing\templates\landing\landing.html:330
+msgid "Váš zisk z 1 zákazky:"
+msgstr "Ваш прибуток з 1 замовлення:"
+
+#: .\landing\templates\landing\landing.html:337
+msgid "Počet zákaziek mesačne:"
+msgstr "Кількість замовлень на місяць:"
+
+#: .\landing\templates\landing\landing.html:345
+msgid "Váš čistý zisk za mesiac:"
+msgstr "Ваш чистий прибуток за місяць:"
+
+#: .\landing\templates\landing\landing.html:347
+msgid "Po odpočítaní ceny balíka Pro (49€)."
+msgstr "Після відрахування вартості пакета Pro (49€)."
+
+#: .\landing\templates\landing\landing.html:349
+msgid "Pri zisku"
+msgstr "При прибутку"
+
+#: .\landing\templates\landing\landing.html:349
+msgid "vám stačí uzavrieť"
+msgstr "вам достатньо закрити"
+
+#: .\landing\templates\landing\landing.html:349
+msgid "len 1 zákazku"
+msgstr "лише 1 замовлення"
+
+#: .\landing\templates\landing\landing.html:349
+msgid "aby ste zaplatili systém."
+msgstr "щоб окупити систему."
+
+#: .\landing\templates\landing\landing.html:360
+msgid "3 dni zadarmo na skúšku. Zrušenie kedykoľvek."
+msgstr "3 дні безкоштовного тесту. Скасування будь-коли."
+
+#: .\landing\templates\landing\landing.html:367
+msgid "Pre začiatočníkov."
+msgstr "Для початківців."
+
+#: .\landing\templates\landing\landing.html:370
+msgid "1 kategória"
+msgstr "1 категорія"
+
+#: .\landing\templates\landing\landing.html:371
+msgid "Oneskorenie 15 minút"
+msgstr "Затримка 15 хвилин"
+
+#: .\landing\templates\landing\landing.html:372
+msgid "Telegram bot"
+msgstr "Telegram бот"
+
+#: .\landing\templates\landing\landing.html:374
+msgid "Vybrať Starter"
+msgstr "Обрати Starter"
+
+#: .\landing\templates\landing\landing.html:379
+msgid "Odporúčané"
+msgstr "Рекомендовано"
+
+#: .\landing\templates\landing\landing.html:381
+msgid "Pre profesionálov."
+msgstr "Для професіоналів."
+
+#: .\landing\templates\landing\landing.html:384
+msgid "Okamžité alerty (3s)"
+msgstr "Миттєві сповіщення (3с)"
+
+#: .\landing\templates\landing\landing.html:385
+msgid "Až 3 kategórie"
+msgstr "До 3 категорій"
+
+#: .\landing\templates\landing\landing.html:386
+msgid "Filter kvality (Score)"
+msgstr "Фільтр якості (Score)"
+
+#: .\landing\templates\landing\landing.html:387
+msgid "Telegram + WhatsApp"
+msgstr "Telegram + WhatsApp"
+
+#: .\landing\templates\landing\landing.html:389
+msgid "Vyskúšať zadarmo"
+msgstr "Спробувати безкоштовно"
+
+#: .\landing\templates\landing\landing.html:395
+msgid "Pre firmy a agentúry."
+msgstr "Для компаній та агентств."
+
+#: .\landing\templates\landing\landing.html:398
+msgid "Okamžité alerty"
+msgstr "Миттєві сповіщення"
+
+#: .\landing\templates\landing\landing.html:399
+msgid "Všetky kategórie (Bez limitu)"
+msgstr "Всі категорії (Без ліміту)"
+
+#: .\landing\templates\landing\landing.html:400
+msgid "Faktúra pre s.r.o."
+msgstr "Рахунок-фактура для компанії"
+
+#: .\landing\templates\landing\landing.html:401
+msgid "TG, WA + Email prístup"
+msgstr "TG, WA + Email доступ"
+
+#: .\landing\templates\landing\landing.html:403
+msgid "Aktivovať Business"
+msgstr "Активувати Business"
+
+#: .\landing\templates\landing\landing.html:409
+msgid "© 2026 SniperLead. Vytvorené pre trh v SR."
+msgstr "© 2026 SniperLead. Створено для ринку Словаччини."
+
+
+
+msgid "Získavajte zákazky zo sociálnych sietí"
+msgstr "Отримуйте замовлення із соціальних мереж"
+
+msgid "skôr ako konkurencia"
+msgstr "швидше конкурентів"
+
+msgid "Náš systém nepretržite skenuje Facebook skupiny a Telegram kanály, vyhodnocuje dopyty pomocou AI a posiela vám priame kontakty do 3 sekúnd."
+msgstr "Наша система постійно сканує групи Facebook та канали Telegram, оцінює запити за допомогою штучного інтелекту та надсилає вам прямі контакти протягом 3 секунд."
+
+msgid "AI-radar aktívny v celom Slovensko"
+msgstr "ІІ-радар активний по всій Словаччині"
+
+msgid "Ako to funguje"
+msgstr "Як це працює"
+
+msgid "Kalkulačka návratnosti investície"
+msgstr "Калькулятор окупності інвестицій"
+
+msgid "Flexibilné cenové plány pre váš rast"
+msgstr "Гнучкі тарифні плани для вашого зростання"
+
+msgid "Prenájom a predaj bytov"
+msgstr "Оренда та продаж квартир"
+
+msgid "Spolubývanie a izby"
+msgstr "Співмешкання та кімнати"
+
+msgid "Prechodný pobyt & VNJ"
+msgstr "Тимчасове проживання та ВНЖ"
+
+msgid "Účtovníctvo & s.r.o."
+msgstr "Бухгалтерія та ТОВ"
+
+msgid "Úradné preklady"
+msgstr "Офіційні переклади"
+
+msgid "Právnici a advokáti"
+msgstr "Юристи та адвокати"
+
+msgid "Stavba, obklady & majstri"
+msgstr "Будівництво, плитка та майстри"
+
+msgid "Hodinový manžel"
+msgstr "Чоловік на годину"
+
+msgid "Autoservis & detailing"
+msgstr "Автосервіс та деталінг"
+
+msgid "Sťahovanie a preprava"
+msgstr "Переїзд та перевезення"
+
+msgid "Lekári a prehliadky"
+msgstr "Лікарі та огляди"
+
+msgid "Opatrovateľky detí"
+msgstr "Доглядальниці / няні для дітей"

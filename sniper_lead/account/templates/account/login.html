@@ -1,0 +1,61 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="sk" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Prihlásenie — SniperLead" %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+</head>
+<body class="h-full flex items-center justify-center antialiased">
+
+  <div class="max-w-md w-full mx-4">
+    <!-- Логотип -->
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-2.5">
+        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center font-black text-white text-lg shadow-md shadow-indigo-600/20">🎯</div>
+        <span class="font-extrabold text-2xl tracking-tight text-slate-900">{% trans "SniperLead" %}</span>
+      </a>
+      <h2 class="text-xl font-extrabold text-slate-900 mt-4">{% trans "Vitajte späť" %}</h2>
+      <p class="text-xs text-slate-500 mt-1">{% trans "Prihláste sa do svojho radarového systému" %}</p>
+    </div>
+
+    <!-- Форма -->
+    <div class="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-xl shadow-slate-200/50">
+      <form method="POST" action="" class="space-y-5">
+        {% csrf_token %}
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">{% trans "Emailová adresa" %}</label>
+          <input type="email" name="username" required placeholder="name@firma.sk"
+                 class="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs font-medium focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 transition">
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-xs font-bold text-slate-700">{% trans "Heslo" %}</label>
+            <a href="#" class="text-[11px] font-semibold text-indigo-600 hover:underline">{% trans "Zabudli ste heslo?" %}</a>
+          </div>
+          <input type="password" name="password" required placeholder="••••••••"
+                 class="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs font-medium focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600/10 transition">
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs rounded-xl shadow-lg shadow-indigo-600/20 transition">
+          {% trans "Prihlásiť sa" %}
+        </button>
+      </form>
+    </div>
+
+    <!-- Футер формы -->
+    <p class="text-center text-xs text-slate-500 mt-6">
+      {% trans "Ešte nemáte účet?" %} <a href="{% url 'signup' %}" class="font-bold text-indigo-600 hover:underline">{% trans "Vyskúšajte 3 dni zadarmo" %}</a>
+    </p>
+  </div>
+
+</body>
+
+</html>
