@@ -68,22 +68,28 @@ def stripe_webhook(request):
             sub.is_active = True
             sub.save()
             user.has_used_trial = True
+            user.plan = 'trial/pro'
             user.save()
             print('DEBUG: успешно обновили юзера', user.email)  # ← и эту
         except Profile.DoesNotExist:
             print('DEBUG: юзер с id', user_id, 'НЕ НАЙДЕН в базе')  # ← и эту
 
     elif event['type'] == 'invoice.payment_succeeded':
-        session = event['data']['object']
-        stripe_subscription_id = session.subscription
-        try:
-            sub = UserSubscription.objects.get(
-                stripe_subscription_id=stripe_subscription_id
-            )
-            sub.is_active = True
-            sub.save()
-        except UserSubscription.DoesNotExist:
-            pass
+        invoice = event['data']['object']
+        stripe_subscription_id = None
+        parent = getattr(invoice, 'parent', None)
+        if parent and getattr(parent, 'subscription_details', None):
+            stripe_subscription_id = parent.subscription_details.subscription
+
+        if stripe_subscription_id:
+            try:
+                sub = UserSubscription.objects.get(
+                    stripe_subscription_id=stripe_subscription_id
+                )
+                sub.is_active = True
+                sub.save()
+            except UserSubscription.DoesNotExist:
+                pass
 
     # Пользователь отменил подписку или не удалось списать оплату (доступ нужно закрыть)
     elif event['type'] == 'customer.subscription.deleted':
