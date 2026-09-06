@@ -44,7 +44,7 @@ def stripe_webhook(request):
     event = None
     try:
         event = stripe.Webhook.construct_event(
-            payload,sig_header,settings.STRIPE_WEBHOOK_SECRET
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
     except ValueError:
         return HttpResponse(status=400)  # Неверный формат данных
@@ -54,25 +54,28 @@ def stripe_webhook(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
 
-        user_id = session.get('client_reference_id')
-        stripe_customer_id = session.get('customer')
-        stripe_subscription_id = session.get('subscription')
+        user_id = session.client_reference_id
+        stripe_customer_id = session.customer
+        stripe_subscription_id = session.subscription
+
+        print('DEBUG: user_id =', user_id)  # ← добавь эту строку
 
         try:
             user = Profile.objects.get(id=user_id)
             sub, created = UserSubscription.objects.get_or_create(user=user)
             sub.stripe_customer_id = stripe_customer_id
             sub.stripe_subscription_id = stripe_subscription_id
-            sub.is_active = True  # Даем доступ к SniperLead!
+            sub.is_active = True
             sub.save()
-            user.has_used_trial = True  # ← новые строки
+            user.has_used_trial = True
             user.save()
+            print('DEBUG: успешно обновили юзера', user.email)  # ← и эту
         except Profile.DoesNotExist:
-            pass
+            print('DEBUG: юзер с id', user_id, 'НЕ НАЙДЕН в базе')  # ← и эту
 
     elif event['type'] == 'invoice.payment_succeeded':
         session = event['data']['object']
-        stripe_subscription_id = session.get('subscription')
+        stripe_subscription_id = session.subscription
         try:
             sub = UserSubscription.objects.get(
                 stripe_subscription_id=stripe_subscription_id
@@ -82,10 +85,10 @@ def stripe_webhook(request):
         except UserSubscription.DoesNotExist:
             pass
 
-        # 3. Пользователь отменил подписку или кончилась карта (доступ нужно закрыть)
+    # Пользователь отменил подписку или не удалось списать оплату (доступ нужно закрыть)
     elif event['type'] == 'customer.subscription.deleted':
         session = event['data']['object']
-        stripe_subscription_id = session.get('id')
+        stripe_subscription_id = session.id
         try:
             sub = UserSubscription.objects.get(
                 stripe_subscription_id=stripe_subscription_id
