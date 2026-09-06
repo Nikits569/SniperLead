@@ -33,6 +33,8 @@ urlpatterns += i18n_patterns(
     path("", include("landing.urls")),
     path("", include("account.urls")),
     path('i18n/', include('django.conf.urls.i18n')),
+    path("", include("landing.urls")),
+    path("", include("account.urls")),
 )
 
 if settings.DEBUG:

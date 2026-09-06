@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from django.contrib.auth.models import User
+from account.models import Profile
 from .models import UserSubscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -35,7 +35,6 @@ class CreateCheckoutSessionView(View):
         except stripe.StripeError as e:
             return JsonResponse({'error': str(e)}, status=400)
 
-
 @csrf_exempt
 def stripe_webhook(request):
     payload = request.body
@@ -58,13 +57,13 @@ def stripe_webhook(request):
         stripe_subscription_id = session.get('subscription')
 
         try:
-            user = User.objects.get(id=user_id)
+            user = Profile.objects.get(id=user_id)
             sub, created = UserSubscription.objects.get_or_create(user=user)
             sub.stripe_customer_id = stripe_customer_id
             sub.stripe_subscription_id = stripe_subscription_id
             sub.is_active = True  # Даем доступ к SniperLead!
             sub.save()
-        except User.DoesNotExist:
+        except Profile.DoesNotExist:
             pass
 
     elif event['type'] == 'invoice.payment_succeeded':

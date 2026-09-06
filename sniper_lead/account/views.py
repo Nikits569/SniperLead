@@ -1,4 +1,4 @@
-from account.models import CategoriesType
+from .models import CategoriesType
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout as auth_logout  # Импортируем логаут
 from django.http import JsonResponse
