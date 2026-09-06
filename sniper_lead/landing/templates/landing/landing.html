@@ -420,29 +420,30 @@
 
 </body>
 <script>
-    document.getElementById('pro-checkout-button').addEventListener('click', function () {
-        // Отправляем POST-запрос на наш Django-бэкенд
-        fetch('/create-checkout-session/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Передаем CSRF-токен Django для безопасности
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({ price_id: 'price_1UCDEH4GOC7xoKdWSCWxT3MC' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.checkout_url) {
-                // Успешно получили ссылку от Stripe — перенаправляем туда юзера
-                window.location.href = data.checkout_url;
-            } else {
-                alert('Ошибка создания сессии: ' + (data.error || 'Неизвестная ошибка'));
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
+    const checkoutButton = document.getElementById('pro-checkout-button');
+
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', function () {
+            fetch('/create-checkout-session/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ price_id: 'price_1UCDEH4GOC7xoKdWSCWxT3MC' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    alert('Ошибка создания сессии: ' + (data.error || 'Неизвестная ошибка'));
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         });
-    });
+    }
 </script>
 </html>

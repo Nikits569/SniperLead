@@ -7,6 +7,7 @@ import json
 from .forms import LoginForm, RegisterForm
 from django.views.decorators.csrf import csrf_exempt
 import uuid
+from django.utils.translation import gettext_lazy as _
 
 def generate_telegram_link(request):
   token = uuid.uuid4().hex
@@ -27,11 +28,12 @@ def login(request):
     email = form.cleaned_data.get('email')
     password = form.cleaned_data.get('password')
     user = authenticate(request, email=email, password=password)
-    auth_login(request, user)
 
-    return redirect('profile')
-  else:
-    form = LoginForm()
+    if user is not None:
+        auth_login(request, user)
+        return redirect('profile')
+    else:
+        form.add_error(None, _('Неверный email или пароль'))
 
   return render(request, 'account/login.html', {'form': form})
 
