@@ -167,8 +167,60 @@
     </div>
 
     <div class="w-full relative ticker-fade-container overflow-hidden py-2">
+      <!-- Плотные градиентные "вуали" поверх краёв — заметнее, чем чистая mask-прозрачность -->
+      <div class="ticker-edge-fade ticker-edge-fade-left"></div>
+      <div class="ticker-edge-fade ticker-edge-fade-right"></div>
+
       <div class="ticker-track flex gap-4">
         <div class="flex gap-4 shrink-0">
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+
           <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
             <div>
               <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
@@ -195,6 +247,54 @@
         </div>
 
         <div class="flex gap-4 shrink-0">
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadáme 2-izbák v Ružinove, budget do 850€ so všetkým, prosím ponúknite niečo pekné»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 1m" %}</span><span>+421 948 •••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-sky-100 text-sky-700">{% trans "⚖️ VNJ (TG)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 96</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Potrebujem súrne termín na cudzineckú políciu v BA, ide o prechodný pobyt»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Bratislava • Pred 3m" %}</span><span>@jurist•••</span></div>
+          </div>
+
+          <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-700">{% trans "🔨 Stavba (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 94</span></div>
+              <p class="text-xs text-slate-700 font-medium line-clamp-2">{% trans "«Hľadám šikovného obkladača na kúpeľňu 7m2 + sanita komplet v novostavbe»" %}</p>
+            </div>
+            <div class="flex justify-between text-[10px] text-slate-400 mt-2.5 pt-2 border-t border-slate-200/40"><span>{% trans "Trnava • Pred 7m" %}</span><span>+421 905 •••</span></div>
+          </div>
+
           <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
             <div>
               <div class="flex justify-between mb-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{% trans "🏠 Nájom (FB)" %}</span><span class="text-[9px] font-bold text-rose-600">Score 98</span></div>

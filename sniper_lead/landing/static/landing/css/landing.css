@@ -1,7 +1,8 @@
-/* Смещаем ровно на один блок из трех (-33.333%) */
+/* В HTML только 2 одинаковых набора карточек — доезжаем ровно до
+   начала второго набора (-50%), чтобы петля была бесшовной */
 @keyframes smoothTicker {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-33.333%); }
+  100% { transform: translateX(-150%); }
 }
 
 .ticker-track {
@@ -14,16 +15,30 @@
   animation-play-state: paused;
 }
 
-/* Растягиваем маску затухания на всю ширину экрана, чтобы карточки не резались */
+/* Плавное затухание по краям ленты */
 .ticker-fade-container {
-  width: 100vw;
+  width: 100%;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.ticker-edge-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  max-width: 20%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ticker-edge-fade-left {
+  left: 0;
+  background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0));
+}
+
+.ticker-edge-fade-right {
+  right: 0;
+  background: linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0));
 }
 
 .logo {

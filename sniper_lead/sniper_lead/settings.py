@@ -86,11 +86,13 @@ WSGI_APPLICATION = 'sniper_lead.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
+
 if 'runserver' in sys.argv:
     tunnel = SSHTunnelForwarder(
         ('176.223.142.76', 22),
         ssh_username='root',
-        ssh_password=os.getenv('SSH_PASSWORD'), # Или ssh_pkey='path/to/key'
+        ssh_password=os.getenv('SSH_PASSWORD'),
         remote_bind_address=('127.0.0.1', 5432),
         local_bind_address=('127.0.0.1', 5433)
     )
