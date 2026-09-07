@@ -42,7 +42,7 @@
   <main class="max-w-4xl mx-auto px-4 py-10 w-full space-y-8"
         x-data="{
           selectedCategories: {{ request.user.categories|safe }},
-          maxCategories: {{ max_categories|default:3 }},
+          maxCategories: {{ max_categories }},
           tgLinked: {% if request.user.telegram %}true{% else %}false{% endif %},
           emailNotification: {% if request.user.email_notification %}true{% else %}false{% endif %},
 
@@ -127,8 +127,10 @@
         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
           <span class="text-[10px] text-slate-400 block mb-1">{% trans "Platnosť" %}</span>
           <span class="text-xs font-black text-slate-800">
-            {% if request.user.days_remaining == 0 %}
+            {% if request.user.days_remaining == 0 and request.user.end_at %}
               {% trans "Skončilo" %} {{ request.user.end_at|date:"d.m.Y" }}
+            {% elif request.user.end_at == None %}
+              -
             {% else %}
               {{ request.user.days_remaining }} {% trans "dní do skončenia" %}
             {% endif %}
@@ -140,7 +142,15 @@
         </div>
         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
           <span class="text-[10px] text-slate-400 block mb-1">{% trans "Rýchlosť alertov" %}</span>
-          <span class="text-xs font-black text-indigo-600">{% trans "⚡ Do 3 sekúnd" %}</span>
+          <span class="text-xs font-black text-indigo-600">
+            {% if request.user.plan == 'starter' %}
+              {% trans "⚡ Do 5 minut" %}
+            {% elif request.user.plan == None %}
+              -
+            {% else %}
+              {% trans "⚡ Do 3 sekúnd" %}
+            {% endif %}
+          </span>
         </div>
       </div>
     </div>
@@ -153,10 +163,12 @@
           <p class="text-xs text-slate-500">{% trans "Kliknutím vyberte kategórie, ktoré chcete monitorovať na FB a v Telegrame." %}</p>
         </div>
         <!-- Вызываем правильный метод сохранения saveChanges() -->
-        <button @click="saveChanges()"
-                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition shadow-sm">
-          {% trans "Uložiť zmeny" %}
-        </button>
+        {% if requrst.user.plan %}
+          <button @click="saveChanges()"
+                  class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition shadow-sm">
+            {% trans "Uložiť zmeny" %}
+          </button>
+        {% endif %}
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">

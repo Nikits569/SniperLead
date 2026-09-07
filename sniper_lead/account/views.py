@@ -51,7 +51,8 @@ def signup(request):
   form = RegisterForm(request.POST or None)
 
   if request.method == 'POST' and form.is_valid():
-    form.save()
+    user = form.save()
+    auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
     return redirect('profile')
   else:
     print(form.errors)
@@ -71,8 +72,8 @@ def profile(request):
 
       # Исправленные ключи планов (раздельно trial и pro)
       plan_limits = {'starter': 1, 'trial/pro': 3, 'pro': 3, 'business': 999}
-      user_plan = getattr(request.user, 'plan', 'starter')
-      max_allowed = plan_limits.get(user_plan, 1)
+      user_plan = request.user.plan
+      max_allowed = plan_limits.get(user_plan, 0)
 
       # Проверяем лимит категорий ДО сохранения
       if len(selected_cats) > max_allowed:
@@ -96,10 +97,11 @@ def profile(request):
 
   # GET запрос
   plan_limits = {'starter': 1, 'trial/pro': 3, 'pro': 3, 'business': 999}
-  user_plan = getattr(request.user, 'plan', 'starter')
 
+  user_plan = request.user.plan
   context = {
-      'categories_choices': CategoriesType.choices,
-      'max_categories': plan_limits.get(user_plan, 1),
+    'categories_choices': CategoriesType.choices,
+    'max_categories': plan_limits.get(user_plan, 0),  # дефолт 0, не 1
   }
+
   return render(request, 'account/profile.html', context)

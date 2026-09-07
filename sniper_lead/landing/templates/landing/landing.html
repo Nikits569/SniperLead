@@ -8,15 +8,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% trans "SniperLead — Získavajte zákazky zo sociálnych sietí skôr ako konkurencia" %}</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Кастомные стили -->
   <link rel="stylesheet" href="{% static 'landing/css/landing.css' %}">
 
-<!-- 1. Сначала твоя логика загружается синхронно (без defer) -->
   <script>
-    // Передаем переведенные категории прямо из шаблона Django
     window.LANDING_CATS = [
       { g: 'realty', i: '🏠', t: '{% trans "Prenájom a predaj bytov" %}' },
       { g: 'realty', i: '🛏️', t: '{% trans "Spolubývanie a izby" %}' },
@@ -35,10 +31,8 @@
 
   <script src="{% static 'landing/js/landing.js' %}"></script>
 
-  <!-- 2. Только потом грузится само ядро Alpine.js -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-  <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -46,7 +40,6 @@
 
 <body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-indigo-500 selection:text-white">
 
-  <!-- Navbar -->
   <header class="border-b border-slate-200/80 sticky top-0 bg-white/90 backdrop-blur-lg z-50 transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-2.5 cursor-pointer">
@@ -55,7 +48,6 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <!-- Language Switcher -->
         <div class="hidden sm:flex bg-slate-100 p-1 rounded-md border border-slate-200/60 text-xs font-semibold">
           <a href="/sk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'sk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">SK</a>
           <a href="/uk{{ request.path|slice:'3:' }}" class="px-2.5 py-1 rounded transition {% if LANGUAGE_CODE == 'uk' %}bg-white text-slate-900 shadow-sm{% else %}text-slate-500 hover:text-slate-700{% endif %}">UK</a>
@@ -72,11 +64,9 @@
     </div>
   </header>
 
-  <!-- Экран 1: Clean SaaS Hero -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24">
     <div class="grid lg:grid-cols-12 gap-12 items-center">
 
-      <!-- Левая колонка (Контент) -->
       <div class="lg:col-span-7 text-left">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-700 text-xs font-semibold mb-6 shadow-sm">
           <span class="relative flex h-2 w-2">
@@ -106,14 +96,12 @@
         </div>
       </div>
 
-      <!-- Правая колонка (Терминал) -->
       <div class="lg:col-span-5 relative" x-data="heroTerminal()">
         <div class="absolute -top-10 -right-10 w-64 h-64 bg-indigo-300/20 rounded-full blur-3xl -z-10"></div>
         <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl -z-10"></div>
 
         <div class="bg-white border border-slate-200/80 rounded-2xl shadow-2xl shadow-slate-200/50 overflow-hidden">
 
-          <!-- UI Header -->
           <div class="bg-slate-50/50 border-b border-slate-100 px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
@@ -126,7 +114,6 @@
             </span>
           </div>
 
-          <!-- UI Tabs -->
           <div class="p-3 bg-white border-b border-slate-50 flex gap-2 overflow-x-auto no-scrollbar">
             <button @click="switchTab('rent')" :class="activeTab === 'rent' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "🏠 Reality" %}</button>
             <button @click="switchTab('vnz')" :class="activeTab === 'vnz' ? 'bg-indigo-50 text-indigo-700' : 'bg-white text-slate-500 hover:bg-slate-50'" class="px-3 py-1.5 rounded-lg text-[11px] font-bold transition whitespace-nowrap">{% trans "⚖️ Právo" %}</button>
@@ -135,7 +122,6 @@
           </div>
 
           <div class="p-5 space-y-4">
-            <!-- Сырой пост -->
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-100 text-left relative transition-opacity duration-200" :class="isAnimating ? 'opacity-0' : 'opacity-100'">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-[10px] font-bold text-slate-500" x-text="leads[activeTab].source"></span>
@@ -145,7 +131,6 @@
               <p class="text-[11px] text-slate-500 leading-relaxed italic" x-text="leads[activeTab].text"></p>
             </div>
 
-            <!-- Всплывающий Telegram Push -->
             <div class="p-4 rounded-xl bg-slate-900 text-white shadow-xl shadow-slate-900/10 border border-slate-800 text-left transition-opacity duration-200" :class="isAnimating ? 'opacity-0' : 'opacity-100'">
               <div class="flex items-center justify-between mb-3">
                 <div class="flex items-center gap-2">
@@ -173,7 +158,6 @@
     </div>
   </section>
 
-  <!-- Бесконечный конвейер (Seamless Marquee) -->
   <section class="w-full py-6 bg-white border-y border-slate-100 ticker-wrapper overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-3 flex items-center justify-between text-[11px] font-bold text-slate-400">
       <div class="flex items-center gap-2">
@@ -184,7 +168,6 @@
 
     <div class="w-full relative ticker-fade-container overflow-hidden py-2">
       <div class="ticker-track flex gap-4">
-        <!-- НАБОР 1 -->
         <div class="flex gap-4 shrink-0">
           <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
             <div>
@@ -211,7 +194,6 @@
           </div>
         </div>
 
-        <!-- НАБОР 2 -->
         <div class="flex gap-4 shrink-0">
           <div class="w-80 bg-slate-50 p-4 rounded-xl border border-slate-200/60 shadow-xs flex flex-col justify-between">
             <div>
@@ -241,14 +223,12 @@
     </div>
   </section>
 
-  <!-- Экран 2: Компактный хаб категорий -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20" x-data="categoriesHub()">
     <div class="text-center max-w-xl mx-auto mb-10">
       <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Sledované kategórie dopytov" %}</h2>
       <p class="text-slate-500 text-sm">{% trans "Vyberte si oblasť, v ktorej hľadáte klientov." %}</p>
     </div>
 
-    <!-- Табы фильтрации -->
     <div class="flex items-center justify-center gap-2 overflow-x-auto pb-4 no-scrollbar mb-6">
       <button @click="selected = 'all'" :class="selected === 'all' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "Všetky (12)" %}</button>
       <button @click="selected = 'realty'" :class="selected === 'realty' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🏠 Reality" %}</button>
@@ -257,7 +237,6 @@
       <button @click="selected = 'auto'" :class="selected === 'auto' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🚗 Auto" %}</button>
     </div>
 
-    <!-- Сетка категорий -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <template x-for="c in filteredCats" :key="c.t">
         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3 hover:border-indigo-400 transition">
@@ -268,7 +247,6 @@
     </div>
   </section>
 
-  <!-- Экран 3: Pipeline -->
   <section id="pipeline" class="bg-white border-y border-slate-200 py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-xl mx-auto mb-14">
@@ -298,7 +276,6 @@
     </div>
   </section>
 
-  <!-- Экран 4: Калькулятор ROI -->
   <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20" x-data="roiCalculator()">
     <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm">
       <div class="text-center max-w-lg mx-auto mb-10">
@@ -343,7 +320,6 @@
     </div>
   </section>
 
-  <!-- Экран 5: Тарифы -->
   <section id="pricing" class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-slate-200">
     <div class="text-center max-w-xl mx-auto mb-14">
       <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-3">{% trans "Flexibilné cenové plány pre váš rast" %}</h2>
@@ -361,7 +337,16 @@
           <li class="flex items-center gap-2 bg-slate-50 py-1 px-2 rounded -ml-2 text-slate-500"><span>⏳</span> {% trans "Oneskorenie 15 minút" %}</li>
           <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Telegram bot" %}</li>
         </ul>
-        <a href="/login" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">{% trans "Vybrať Starter" %}</a>
+
+        {% if user.is_authenticated %}
+          <button data-plan="starter" class="checkout-button block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
+            {% trans "Vybrať Starter" %}
+          </button>
+        {% else %}
+          <a href="{% url 'login' %}" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
+            {% trans "Vybrať Starter" %}
+          </a>
+        {% endif %}
       </div>
 
       <!-- Pro -->
@@ -371,7 +356,7 @@
         <p class="text-xs text-slate-500 mb-6">{% trans "Pre profesionálov." %}</p>
 
         <div class="text-3xl font-black text-slate-900 mb-6">
-          49€ <span class="text-xs font-medium text-slate-400">/ mes.</span>
+          69€ <span class="text-xs font-medium text-slate-400">/ mes.</span>
         </div>
 
         <ul class="space-y-3 text-xs text-slate-700 mb-8 flex-1">
@@ -383,11 +368,11 @@
 
         {% if user.is_authenticated %}
           {% if user.has_used_trial %}
-            <button id="pro-checkout-button" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-sm">
-              {% trans "Kúpiť Pro — 49€/mes." %}
+            <button data-plan="pro" class="checkout-button block w-full py-3 text-center text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-sm">
+              {% trans "Kúpiť Pro — 69€/mes." %}
             </button>
           {% else %}
-            <button id="pro-checkout-button" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-sm">
+            <button data-plan="pro" class="checkout-button block w-full py-3 text-center text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-sm">
               {% trans "Vyskúšať zadarmo (3 dni)" %}
             </button>
           {% endif %}
@@ -409,7 +394,16 @@
           <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "Faktúra pre s.r.o." %}</li>
           <li class="flex items-center gap-2"><span class="text-indigo-500 font-bold">✓</span> {% trans "TG, WA + Email prístup" %}</li>
         </ul>
-        <a href="/login" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">{% trans "Aktivovať Business" %}</a>
+
+        {% if user.is_authenticated %}
+          <button data-plan="business" class="checkout-button block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
+            {% trans "Aktivovať Business" %}
+          </button>
+        {% else %}
+          <a href="{% url 'login' %}" class="block w-full py-3 text-center text-xs font-bold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
+            {% trans "Aktivovať Business" %}
+          </a>
+        {% endif %}
       </div>
     </div>
   </section>
@@ -420,30 +414,30 @@
 
 </body>
 <script>
-    const checkoutButton = document.getElementById('pro-checkout-button');
+    document.querySelectorAll('.checkout-button').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const plan = button.dataset.plan;
 
-    if (checkoutButton) {
-        checkoutButton.addEventListener('click', function () {
             fetch('/create-checkout-session/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({ price_id: 'price_1UCDEH4GOC7xoKdWSCWxT3MC' })
+                body: JSON.stringify({ plan: plan })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.checkout_url) {
                     window.location.href = data.checkout_url;
                 } else {
-                    alert('Ошибка создания сессии: ' + (data.error || 'Неизвестная ошибка'));
+                    alert(data.error || 'Neznáma chyba');
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         });
-    }
+    });
 </script>
 </html>

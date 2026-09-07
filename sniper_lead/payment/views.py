@@ -1,6 +1,7 @@
-
+from django.shortcuts import render
 from django.utils import timezone
-from datetime import date, timedelta, datetime
+from datetime import timedelta
+import json
 import stripe
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -14,12 +15,52 @@ from .models import UserSubscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+# Уровни тарифов — чем выше число, тем "старше" тариф.
+# Используется, чтобы решить, разрешать ли новую покупку
+# (апгрейд — разрешаем, повтор того же или даунгрейд — блокируем).
+PLAN_LEVELS = {
+    None: 0,
+    'starter': 1,
+    'trial/pro': 2,
+    'pro': 2,
+    'business': 3,
+}
+
+PLAN_PRICES = {
+    'starter': 'price_1UCikP4GOC7xoKdSFX6Nwuhc',
+    'pro': 'price_1UCDEH4GOC7xoKdSCWnxT3MC',
+    'business': 'price_1UCikd4GOC7xoKdSVA8zw7cM',
+}
+
+
 @method_decorator(login_required, name='dispatch')
 class CreateCheckoutSessionView(View):
 
     def post(self, request, *args, **kwargs):
         try:
-            price_id = 'price_1UCDEH4GOC7xoKdSCWnxT3MC'
+            data = json.loads(request.body or '{}')
+            requested_plan = data.get('plan', 'pro')
+
+            if requested_plan not in PLAN_PRICES:
+                return JsonResponse({'error': 'Neznámy tarif'}, status=400)
+
+            # Проверяем, есть ли уже активная подписка
+            try:
+                sub = UserSubscription.objects.get(user=request.user)
+                has_active_sub = sub.is_active
+            except UserSubscription.DoesNotExist:
+                has_active_sub = False
+
+            if has_active_sub:
+                current_level = PLAN_LEVELS.get(request.user.plan, 0)
+                requested_level = PLAN_LEVELS.get(requested_plan, 0)
+
+                if requested_level <= current_level:
+                    return JsonResponse({
+                        'error': 'Už máte tento alebo vyšší tarif. Ak chcete znížiť tarif, najprv zrušte aktuálne predplatné.'
+                    }, status=400)
+
+            price_id = PLAN_PRICES[requested_plan]
 
             session_params = {
                 'payment_method_types': ['card'],
@@ -28,6 +69,8 @@ class CreateCheckoutSessionView(View):
                 'success_url': settings.DOMAIN_URL + '/dashboard/?success=true&session_id={CHECKOUT_SESSION_ID}',
                 'cancel_url': settings.DOMAIN_URL + '/pricing/?canceled=true',
                 'client_reference_id': str(request.user.id),
+                # сохраняем, какой именно тариф покупали — прочитаем это в вебхуке
+                'metadata': {'plan': requested_plan},
             }
 
             # Триал даём только если юзер им ещё не пользовался
@@ -39,6 +82,7 @@ class CreateCheckoutSessionView(View):
 
         except stripe.StripeError as e:
             return JsonResponse({'error': str(e)}, status=400)
+
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -61,7 +105,10 @@ def stripe_webhook(request):
         stripe_customer_id = session.customer
         stripe_subscription_id = session.subscription
 
-        print('DEBUG: user_id =', user_id)  # ← добавь эту строку
+        metadata = getattr(session, 'metadata', None)
+        purchased_plan = getattr(metadata, 'plan', 'pro') if metadata else 'pro'
+
+        print('DEBUG: user_id =', user_id, 'plan =', purchased_plan)
 
         try:
             user = Profile.objects.get(id=user_id)
@@ -70,23 +117,21 @@ def stripe_webhook(request):
             sub.stripe_subscription_id = stripe_subscription_id
             sub.is_active = True
             sub.save()
-            user.has_used_trial = True
 
+            # Проверяем ДО того, как перезапишем has_used_trial
             if created or not user.has_used_trial:
-                # первый раз — это был триал
-                user.plan = 'trial/pro'
                 user.end_at = timezone.now() + timedelta(days=3)
             else:
-                # уже платящий юзер — сразу полный месяц
-                user.plan = 'pro'
                 user.end_at = timezone.now() + timedelta(days=30)
 
+            user.plan = purchased_plan
+            user.has_used_trial = True
             user.start_at = timezone.now()
             user.save()
 
-            print('DEBUG: успешно обновили юзера', user.email)  # ← и эту
+            print('DEBUG: успешно обновили юзера', user.email, '→', user.plan)
         except Profile.DoesNotExist:
-            print('DEBUG: юзер с id', user_id, 'НЕ НАЙДЕН в базе')  # ← и эту
+            print('DEBUG: юзер с id', user_id, 'НЕ НАЙДЕН в базе')
 
     elif event['type'] == 'invoice.payment_succeeded':
         invoice = event['data']['object']
@@ -119,3 +164,9 @@ def stripe_webhook(request):
             pass
 
     return HttpResponse(status=200)
+
+
+@login_required
+def dashboard_view(request):
+    sub, created = UserSubscription.objects.get_or_create(user=request.user)
+    return render(request, 'payment/dashboard.html', {'subscription': sub})
