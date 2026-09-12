@@ -2,13 +2,13 @@
    начала второго набора (-50%), чтобы петля была бесшовной */
 @keyframes smoothTicker {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-150%); }
+  100% { transform: translateX(-50%); }
 }
 
 .ticker-track {
   display: flex;
   width: max-content;
-  animation: smoothTicker 45s linear infinite;
+  animation: smoothTicker 65s linear infinite;
 }
 
 .ticker-wrapper:hover .ticker-track {

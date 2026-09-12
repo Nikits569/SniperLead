@@ -14,18 +14,18 @@
 
   <script>
     window.LANDING_CATS = [
-      { g: 'realty', i: '🏠', t: '{% trans "Prenájom a predaj bytov" %}' },
-      { g: 'realty', i: '🛏️', t: '{% trans "Spolubývanie a izby" %}' },
-      { g: 'legal', i: '📑', t: '{% trans "Prechodný pobyt & VNJ" %}' },
-      { g: 'legal', i: '📊', t: '{% trans "Účtovníctvo & s.r.o." %}' },
-      { g: 'legal', i: '🌐', t: '{% trans "Úradné preklady" %}' },
-      { g: 'legal', i: '⚖️', t: '{% trans "Právnici a advokáti" %}' },
-      { g: 'build', i: '🔨', t: '{% trans "Stavba, obklady & majstri" %}' },
-      { g: 'build', i: '🧹', t: '{% trans "Hodinový manžel" %}' },
-      { g: 'auto', i: '🚗', t: '{% trans "Autoservis & detailing" %}' },
-      { g: 'auto', i: '📦', t: '{% trans "Sťahovanie a preprava" %}' },
-      { g: 'services', i: '🩺', t: '{% trans "Lekári a prehliadky" %}' },
-      { g: 'services', i: '👶', t: '{% trans "Opatrovateľky detí" %}' }
+      { g: 'realty', i: '🏠', t: '{% trans "Prenájom a predaj bytov" %}', e: 'Hľadáme 2-izbák v Ružinove, rozpočet do 850€ so všetkým...', loc: 'Bratislava', time: 'pred 2m' },
+      { g: 'realty', i: '🛏️', t: '{% trans "Spolubývanie a izby" %}', e: 'Hľadám izbu na spolubývanie v centre mesta, od 1.10...', loc: 'Košice', time: 'pred 5m' },
+      { g: 'legal', i: '📑', t: '{% trans "Prechodný pobyt & VNJ" %}', e: 'Potrebujem termín na cudzineckú políciu, prechodný pobyt...', loc: 'Bratislava', time: 'pred 3m' },
+      { g: 'legal', i: '📊', t: '{% trans "Účtovníctvo & s.r.o." %}', e: 'Hľadám účtovníka pre novozaloženú s.r.o., mesačné vedenie...', loc: 'Trnava', time: 'pred 9m' },
+      { g: 'legal', i: '🌐', t: '{% trans "Úradné preklady" %}', e: 'Potrebujem úradný preklad diplomu do slovenčiny, súrne...', loc: 'Bratislava', time: 'pred 4m' },
+      { g: 'legal', i: '⚖️', t: '{% trans "Právnici a advokáti" %}', e: 'Hľadám advokáta na pracovnoprávny spor, konzultácia tento týždeň...', loc: 'Košice', time: 'pred 12m' },
+      { g: 'build', i: '🔨', t: '{% trans "Stavba, obklady & majstri" %}', e: 'Hľadám obkladača na kúpeľňu 7m², materiál kúpený...', loc: 'Trnava', time: 'pred 7m' },
+      { g: 'build', i: '🧹', t: '{% trans "Hodinový manžel" %}', e: 'Potrebujem hodinového manžela na drobné opravy v byte...', loc: 'Bratislava', time: 'pred 6m' },
+      { g: 'auto', i: '🚗', t: '{% trans "Autoservis & detailing" %}', e: 'Kto má termín na keramickú ochranu do piatku?', loc: 'Košice', time: 'pred 15m' },
+      { g: 'auto', i: '📦', t: '{% trans "Sťahovanie a preprava" %}', e: 'Hľadám prepravcu na sťahovanie 2-izbáku, tento víkend...', loc: 'Bratislava', time: 'pred 10m' },
+      { g: 'services', i: '🩺', t: '{% trans "Lekári a prehliadky" %}', e: 'Hľadám súkromného lekára na vstupnú prehliadku, urgentne...', loc: 'Bratislava', time: 'pred 20m' },
+      { g: 'services', i: '👶', t: '{% trans "Opatrovateľky detí" %}', e: 'Hľadám opatrovateľku na 2 dni v týždni, skúsenosti nutné...', loc: 'Trnava', time: 'pred 18m' }
     ];
   </script>
 
@@ -337,11 +337,20 @@
       <button @click="selected = 'auto'" :class="selected === 'auto' ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'" class="px-4 py-1.5 rounded-lg border text-xs font-bold transition whitespace-nowrap">{% trans "🚗 Auto" %}</button>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <template x-for="c in filteredCats" :key="c.t">
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3 hover:border-indigo-400 transition">
-          <span class="text-xl" x-text="c.i"></span>
-          <span class="text-xs font-bold text-slate-800" x-text="c.t"></span>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-indigo-400 hover:shadow-md transition flex flex-col gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl" x-text="c.i"></span>
+            <span class="text-xs font-bold text-slate-800" x-text="c.t"></span>
+          </div>
+          <div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+            <p class="text-[11px] text-slate-600 italic leading-relaxed" x-text="'«' + c.e + '»'"></p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-200/60 text-[10px] text-slate-400">
+              <span x-text="c.loc"></span>
+              <span x-text="c.time"></span>
+            </div>
+          </div>
         </div>
       </template>
     </div>
@@ -370,7 +379,7 @@
           <div class="hidden md:block absolute top-6 -left-10 w-20 h-px bg-slate-200"></div>
           <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 font-black text-lg flex items-center justify-center mx-auto mb-4">3</div>
           <h3 class="text-sm font-bold text-slate-900 mb-2">{% trans "Získate priamy kontakt" %}</h3>
-          <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">{% trans "Do 3 sekúnd vám pípne notifikácia v mobile. Voláte ako prvý." %}</p>
+          <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">{% trans "Telegram dopyty prichádzajú okamžite (3s). Z Facebooku (kvôli ochrane proti banom) doručujeme overené kontakty do 15–60 minút." %}</p>
         </div>
       </div>
     </div>

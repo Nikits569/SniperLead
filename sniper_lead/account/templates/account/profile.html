@@ -84,6 +84,18 @@
             });
           },
 
+          async function connectTelegram() {
+            const res = await fetch('/account/telegram/generate-link/', {
+              headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const data = await res.json();
+            if (data.link) {
+              window.open(data.link, '_blank');
+              // Опционально: поллинг раз в 3 сек, чтобы кнопка сама обновилась
+              // после того как юзер нажал /start в боте
+            }
+          }
+
           toggleEmail() {
             this.emailNotification = !this.emailNotification;
 
@@ -144,8 +156,8 @@
           <span class="text-[10px] text-slate-400 block mb-1">{% trans "Rýchlosť alertov" %}</span>
           <span class="text-xs font-black text-indigo-600">
             {% if request.user.plan == 'starter' %}
-              {% trans "⚡ Do 5 minut" %}
-            {% elif request.user.plan == None %}
+              {% trans "⚡ Do 15 minut" %}
+            {% elif request.user.days_remaining == 0 %}
               -
             {% else %}
               {% trans "⚡ Do 3 sekúnd" %}
@@ -205,10 +217,10 @@
               <p class="text-[11px] text-slate-500" x-text="tgLinked ? '{% trans "Pripojené (@username_bot)" %}' : '{% trans "Nie je pripojené" %}'"></p>
             </div>
           </div>
-          <button @click="tgLinked = !tgLinked"
-                  :class="tgLinked ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-emerald-600 text-white'"
-                  class="px-4 py-2 rounded-xl text-xs font-bold border transition"
-                  x-text="tgLinked ? '{% trans "Odpojiť" %}' : '{% trans "Prepojiť Telegram" %}'"></button>
+          <button @click="connectTelegram()"
+            :class="tgLinked ? 'bg-rose-50 text-rose-600 border-rose-200' : 'bg-emerald-600 text-white'"
+            class="px-4 py-2 rounded-xl text-xs font-bold border transition"
+            x-text="tgLinked ? '{% trans "Odpojiť" %}' : '{% trans "Prepojiť Telegram" %}'"></button>
         </div>
 
         <!-- Email (Мгновенное сохранение по клику) -->

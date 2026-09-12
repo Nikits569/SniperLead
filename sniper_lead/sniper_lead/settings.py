@@ -172,3 +172,6 @@ STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 
 
 DOMAIN_URL = ('http://localhost:8000')
+
+BOT_INTERNAL_SECRET = os.environ.get('8647623090:AAFkb5eLQRRErJj0WqgCCBURitBJ_Y43l_c')
+TELEGRAM_BOT_USERNAME = os.environ.get('TELEGRAM_BOT_USERNAME', 'SniperLead_bot')
